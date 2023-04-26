@@ -44,6 +44,9 @@ namespace Ecommerce.Admin.Controllers
                 Product product = new Product();
                 product.Id = Guid.NewGuid();
                 product.Name = viewModel.Name;
+                product.SalePrice = viewModel.SalePrice;
+                product.Description = viewModel.Description;
+                product.Title = viewModel.Title;
                 product.ProductCategoryId = viewModel.ProductCategoryId;
                 _productRepository.Create(product);
                 await _productRepository.SaveAsync();
@@ -66,6 +69,9 @@ namespace Ecommerce.Admin.Controllers
             ProductViewModel viewModel = new ProductViewModel();          
             viewModel.Id = id;
             viewModel.Name = productCateogory.Name;
+            viewModel.SalePrice = productCateogory.SalePrice;
+            viewModel.Title = productCateogory.Title;
+            viewModel.Description = productCateogory.Description;
             viewModel.ProductCategoryId = productCateogory.ProductCategoryId;
             viewModel.DropDownList = data;
             return View(viewModel);
@@ -88,6 +94,9 @@ namespace Ecommerce.Admin.Controllers
                     return View();
                 }
                 product.Name = viewModel.Name;
+                product.SalePrice = viewModel.SalePrice;
+                product.Description = viewModel.Description;
+                product.Title = viewModel.Title;
                 product.ProductCategoryId = viewModel.ProductCategoryId;
                 _productRepository.Update(product);
                 await _productRepository.SaveAsync();
