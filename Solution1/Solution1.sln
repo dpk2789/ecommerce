@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommerce.WebApi", "Ecommerce.WebApi\Ecommerce.WebApi.csproj", "{FB250C37-6C6F-404B-B3EB-272F8F777A6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ecommerce.WebApi", "Ecommerce.WebApi\Ecommerce.WebApi.csproj", "{FB250C37-6C6F-404B-B3EB-272F8F777A6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommerce.BlazorApp", "Ecommerce.BlazorApp\Ecommerce.BlazorApp.csproj", "{FCA30F07-3DA2-4BA6-94E1-CAF931FB8DF8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ecommerce.BlazorApp", "Ecommerce.BlazorApp\Ecommerce.BlazorApp.csproj", "{FCA30F07-3DA2-4BA6-94E1-CAF931FB8DF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommerce.Infrastructure", "Ecommerce.Infrastructure\Ecommerce.Infrastructure.csproj", "{DBB60127-982E-4504-9B51-17151CB2A19F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ecommerce.Infrastructure", "Ecommerce.Infrastructure\Ecommerce.Infrastructure.csproj", "{DBB60127-982E-4504-9B51-17151CB2A19F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommerce.Admin", "Ecommerce.Admin\Ecommerce.Admin.csproj", "{70362706-4786-49EA-BFEB-6859AE4D23F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{DBB60127-982E-4504-9B51-17151CB2A19F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBB60127-982E-4504-9B51-17151CB2A19F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBB60127-982E-4504-9B51-17151CB2A19F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70362706-4786-49EA-BFEB-6859AE4D23F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70362706-4786-49EA-BFEB-6859AE4D23F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70362706-4786-49EA-BFEB-6859AE4D23F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70362706-4786-49EA-BFEB-6859AE4D23F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
