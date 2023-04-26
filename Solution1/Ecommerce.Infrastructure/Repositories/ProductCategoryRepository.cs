@@ -7,9 +7,15 @@ namespace Ecommerce.Infrastructure.Repositories
 {
     public class ProductCategoryRepository : RepositoryBase<ProductCategory>, IProductCategoryRepository
     {
-        public ProductCategoryRepository(EcommerceDbContext repositoryContext)
-        : base(repositoryContext)
+        protected readonly EcommerceDbContext _context;
+
+        public ProductCategoryRepository(EcommerceDbContext context) : base(context)
         {
+            _context = context;
         }
+        //public ProductCategoryRepository(EcommerceDbContext repositoryContext)
+        //: base(repositoryContext)
+        //{
+        //}
     }
 }

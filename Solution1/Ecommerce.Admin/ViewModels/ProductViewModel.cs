@@ -1,8 +1,6 @@
-﻿
-
-namespace Ecommerce.Infrastructure.Domains
+﻿namespace Ecommerce.Admin.ViewModels
 {
-    public class Product 
+    public class ProductViewModel
     {
         public Guid Id { get; set; }
         public string? ItemType { get; set; }
@@ -25,7 +23,6 @@ namespace Ecommerce.Infrastructure.Domains
         public bool Is_Taxable { get; set; }
         public bool? IsGroup { get; set; }
         public Guid ProductCategoryId { get; set; }
-        public virtual ProductCategory ProductCategory { get; set; }
-
+        public List<DropDownList> DropDownList { get; set; }
     }
 }

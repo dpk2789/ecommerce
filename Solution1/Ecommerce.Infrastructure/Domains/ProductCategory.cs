@@ -25,8 +25,8 @@ namespace Ecommerce.Infrastructure.Domains
 
         public string? Name { get; set; }
         public string? Type { get; set; }
-        public virtual ProductCategory Parent { get; set; }
-        public IList<ProductCategory> Children { get; set; }
-        public virtual IList<Product> Products { get; set; }      
+        public virtual ProductCategory? Parent { get; set; }
+        public IList<ProductCategory>? Children { get; set; }
+        public virtual IList<Product>? Products { get; set; }      
     }
 }
