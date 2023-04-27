@@ -1,14 +1,22 @@
-using Ecommerce.BlazorApp.Data;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+
+using Blazored.LocalStorage;
+using Ecommerce.BlazorApp.Services;
+using Microsoft.AspNetCore.Components.Authorization;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
-
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddScoped<AuthStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider>(x => x.GetRequiredService<AuthStateProvider>());
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddHttpClient("ProductsAPI", (sp, client) =>
+{
+    client.BaseAddress = new Uri("https://localhost:7237/api");
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

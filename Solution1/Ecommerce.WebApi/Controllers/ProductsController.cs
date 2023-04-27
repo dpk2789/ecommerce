@@ -25,6 +25,8 @@ namespace Ecommerce.WebApi.Controllers
                 {
                     Id = x.Id,
                     Name = x.Name,
+                    Title = x.Title,
+                    SalePrice = x.SalePrice,
                 }).OrderBy(ow => ow.Name).ToListAsync();
 
                 if (data == null)

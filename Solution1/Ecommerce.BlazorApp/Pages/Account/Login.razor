@@ -1,0 +1,85 @@
+﻿@page "/login"
+@inject IHttpClientFactory _clientFacotry
+@inject ILocalStorageService _localStorage
+@inject AuthenticationStateProvider _authStateProvider
+@inject NavigationManager _navigationManager
+
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-conten padding-y">
+
+    <!-- ============================ COMPONENT LOGIN   ================================= -->
+    <div class="card mx-auto" style="max-width: 500px; margin-top:100px;">
+        <div class="card-body">
+            <h4 class="card-title mb-4">Sign in</h4>
+            @if (_showSpinner == true)
+            {
+                <div class="spinner"></div>
+            }
+            <EditForm Model="_loginViewModel" OnValidSubmit="ExecuteLogin">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                @if (authResponse.Success == false)
+                {
+                    <p class="text-danger">"Username or Password incorrect"</p>
+                }
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Email</label>
+                    <input @bind-value="_loginViewModel.Username" class="form-control select" placeholder="Enter your email" />
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input @bind-value="_loginViewModel.Password" id="password" class="form-control" placeholder="Enter your password" type="password" />
+                </div>
+               @* <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                </div>*@
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </EditForm>
+        </div> <!-- card-body.// -->
+    </div> <!-- card .// -->
+
+    <p class="text-center mt-4">Don't have account? <a href="/register">Sign up</a></p>
+    <br><br>
+    <!-- ============================ COMPONENT LOGIN  END.// ================================= -->
+
+
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+@code {
+    private LoginViewModel _loginViewModel = new();
+    private string? errorMessage;
+    AuthResponse? authResponse = new();
+    internal bool _showSpinner = false;
+    public async Task ExecuteLogin()
+    {
+        _showSpinner = true;
+        var httpClient = _clientFacotry.CreateClient("AuthAPI");
+        StringContent content = new StringContent(JsonConvert.SerializeObject(_loginViewModel), Encoding.UTF8, "application/json");
+        var loginUrl = new Uri(httpClient.BaseAddress + "/Account/login");
+        using (var response = await httpClient.PostAsync(loginUrl, content))
+        {
+            string recivedContent = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                errorMessage = response.ReasonPhrase;
+                authResponse.Success = false;
+                authResponse.ErrorMessage = response.ReasonPhrase;
+            }
+            if (response.IsSuccessStatusCode)
+            {
+                // var authResponse = await response.Content.ReadFromJsonAsync<AuthResponse>();
+                authResponse = JsonConvert.DeserializeObject<AuthResponse>(recivedContent);
+                await _localStorage.SetItemAsync("authToken", authResponse.Token);
+                ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(_loginViewModel.Username);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", authResponse.Token);
+                _navigationManager.NavigateTo("/selectcompany", true);
+            }
+
+            _showSpinner = false;
+        }
+
+        StateHasChanged();
+    }
+}

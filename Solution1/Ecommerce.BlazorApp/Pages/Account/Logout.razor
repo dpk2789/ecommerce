@@ -1,0 +1,18 @@
+﻿@page "/logout"
+@inject ILocalStorageService _localStorageService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+@inject AuthStateProvider AuthStateProvider
+
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        ((AuthStateProvider)AuthenticationStateProvider).NotifyUserLogout();
+        await _localStorageService.RemoveItemAsync("authToken");
+        await _localStorageService.RemoveItemAsync("cmpCookee");
+        await _localStorageService.RemoveItemAsync("cmpNameCookee");
+        NavigationManager.NavigateTo("/");
+    }
+}

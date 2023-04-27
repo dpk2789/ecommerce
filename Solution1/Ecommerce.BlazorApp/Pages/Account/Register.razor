@@ -1,0 +1,116 @@
+﻿@page "/register"
+@inject IHttpClientFactory _clientFacotry
+@inject NavigationManager _navigationManager
+
+
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+
+    <!-- ============================ COMPONENT REGISTER   ================================= -->
+    <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
+        <article class="card-body">
+            <header class="mb-4"><h4 class="card-title">Sign up</h4></header>
+
+            @if (_showSpinner == true)
+            {
+                <div class="spinner"></div>
+            }
+            @if (_isRegistered == true)
+            {
+                <h4>Register Successfull!! Press the button to go to Sign In page.</h4>
+                <a href="/signin" class="btn btn-primary btn-lg">Sign In</a>
+            }
+            <EditForm Model="_userRegister" OnValidSubmit="RegisterAsync">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                @* <div class="form-group my-3">
+                    <label for="email">Username</label>
+                    <input @bind-value="_userRegister.Username" id="email" class="form-control" />
+                    <ValidationMessage For=@(()=>_userRegister.Username) />
+                    </div>*@
+                <div class="form-group my-3">
+                    <label for="email">Email</label>
+                    <input @bind-value="_userRegister.Email" id="email" class="form-control" />
+                    <ValidationMessage For=@(()=>_userRegister.Email) />
+                </div>
+                <div class="form-group my-3">
+                    <label for="password">Password</label>
+                    <input @bind-value="_userRegister.Password" id="password" class="form-control" type="password" />
+                    <ValidationMessage For=@(()=>_userRegister.Password) />
+                </div>
+                <div class="form-group my-3">
+                    <label for="ConfirmPassword">Confirm Password</label>
+                    <input @bind-value="_userRegister.ConfirmPassword" id="comfirmPassword" class="form-control" type="password" />
+                    <ValidationMessage For=@(()=>_userRegister.ConfirmPassword) />
+                </div>
+                <ValidationSummary></ValidationSummary>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </EditForm>
+
+           
+        </article><!-- card-body.// -->
+    </div> <!-- card .// -->
+    <p class="text-center mt-4">Have an account? <a href="/login">Log In</a></p>
+    <br><br>
+    <!-- ============================ COMPONENT REGISTER  END.// ================================= -->
+
+
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+@code {
+    public RegisterViewModel _userRegister = new() { Email = "", Password = "" };
+    RegisterResponse? registerResponse = new();
+    private string? errorMessage;
+    internal bool _showSpinner = false;
+    internal bool _isRegistered = false;
+    public async Task RegisterAsync()
+    {
+        _userRegister.Email.Trim();
+        _showSpinner = true;
+        var httpClient = _clientFacotry.CreateClient("AuthAPI");
+        var registerUrl = new Uri(httpClient.BaseAddress + $"/Account/register");
+        StringContent content = new StringContent(JsonConvert.SerializeObject(_userRegister), Encoding.UTF8, "application/json");
+        using (var response = await httpClient.PostAsync(registerUrl, content))
+        {
+            string recivedContent = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                errorMessage = response.ReasonPhrase;
+                registerResponse.Success = false;
+                registerResponse.ErrorMessage = errorMessage;
+            }
+            if (response.IsSuccessStatusCode)
+            {
+                // var authResponse = await response.Content.ReadFromJsonAsync<AuthResponse>();
+                registerResponse = JsonConvert.DeserializeObject<RegisterResponse>(recivedContent);
+                _isRegistered = true;
+                var url = "app.accountingonweb.com" + $"/confirmaccount/" + registerResponse.UserId + "/" + registerResponse.Code;
+                string username = "aowbussiness@gmail.com";
+                string password = "ceopnistsqdnizmd";
+                string from = "aowbussiness@gmail.com";
+                int port = 25;
+                using (MailMessage mail = new MailMessage())
+                {
+                    mail.From = new MailAddress(from);
+                    mail.To.Add(_userRegister.Email);
+                    mail.Subject = "Verify Email";
+                    mail.Body = "Please confirm your account by clicking here: <a href=\"" + HtmlEncoder.Default.Encode(url) + "\">link</a>";
+                    mail.IsBodyHtml = true;
+                    SmtpClient smtp = new SmtpClient
+                        {
+                            Host = "smtp.gmail.com",
+                            Port = port,
+                            UseDefaultCredentials = false,
+                            Credentials = new System.Net.NetworkCredential(username, password),
+                            EnableSsl = true
+                        };
+                    await smtp.SendMailAsync(mail);
+                    _navigationManager.NavigateTo("/registerconfirmation", true);
+                }
+            }
+            _showSpinner = false;
+        }
+        StateHasChanged();
+    }
+}

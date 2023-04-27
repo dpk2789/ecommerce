@@ -1,4 +1,8 @@
-﻿@using System.Net.Http
+﻿@using System.Text
+@using System.Net.Http
+@using System.Net.Http.Headers
+@using System.Net.Mail
+@using System.Text.Encodings.Web
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.Forms
@@ -6,5 +10,9 @@
 @using Microsoft.AspNetCore.Components.Web
 @using Microsoft.AspNetCore.Components.Web.Virtualization
 @using Microsoft.JSInterop
+@using Newtonsoft.Json
 @using Ecommerce.BlazorApp
 @using Ecommerce.BlazorApp.Shared
+@using Ecommerce.BlazorApp.ViewModel
+@using Ecommerce.BlazorApp.Services
+@using Blazored.LocalStorage

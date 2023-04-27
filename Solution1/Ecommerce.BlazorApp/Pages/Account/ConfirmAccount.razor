@@ -1,0 +1,47 @@
+﻿@page "/confirmaccount/{userId}/{code}"
+@inject IHttpClientFactory _clientFacotry
+@inject NavigationManager _navigationManager
+
+<h3>Confirm Account</h3>
+@if (_showSpinner == true)
+{
+    <div class="spinner"></div>
+}
+
+@code {
+    [Parameter]
+    public string userId { get; set; }
+    [Parameter]
+    public string code { get; set; }
+    public ConfirmAccountViewModel confirmAccount = new();
+    public ConfirmEmailResponseViewModel confirmEmailResponseViewModel = new();
+
+    internal bool _showSpinner = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _showSpinner = true;
+        var httpClient = _clientFacotry.CreateClient("AuthAPI");
+        var registerUrl = new Uri(httpClient.BaseAddress + $"/Account/ConfirmEmail");
+        confirmAccount.UserId = userId;
+        confirmAccount.Code = code;
+        StringContent content = new StringContent(JsonConvert.SerializeObject(confirmAccount), Encoding.UTF8, "application/json");
+        using (var response = await httpClient.PostAsync(registerUrl, content))
+        {
+            string recivedContent = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+
+            }
+            if (response.IsSuccessStatusCode)
+            {
+                // var authResponse = await response.Content.ReadFromJsonAsync<AuthResponse>();
+                confirmEmailResponseViewModel = JsonConvert.DeserializeObject<ConfirmEmailResponseViewModel>(recivedContent);
+                _navigationManager.NavigateTo("/accountconfimred", true);
+
+            }
+            _showSpinner = false;
+        }
+    }
+
+}
