@@ -68,8 +68,8 @@
     {
         _userRegister.Email.Trim();
         _showSpinner = true;
-        var httpClient = _clientFacotry.CreateClient("AuthAPI");
-        var registerUrl = new Uri(httpClient.BaseAddress + $"/Account/register");
+        var httpClient = _clientFacotry.CreateClient("ProductsAPI");
+        var registerUrl = new Uri(httpClient.BaseAddress + $"/Accounts/register");
         StringContent content = new StringContent(JsonConvert.SerializeObject(_userRegister), Encoding.UTF8, "application/json");
         using (var response = await httpClient.PostAsync(registerUrl, content))
         {
