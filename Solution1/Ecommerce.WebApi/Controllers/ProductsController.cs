@@ -40,5 +40,26 @@ namespace Ecommerce.WebApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet("GetProductById")]
+        public async Task<IActionResult> GetProductById(Guid Id)
+        {
+            var product = await _productRepository.FindByCondition(x => x.Id == Id).FirstOrDefaultAsync();
+            if (product == null)
+            {
+                return NotFound();
+            }
+            var viewModel = new ProductViewModel();
+            viewModel.Id = product.Id;
+            viewModel.ProductCategoryId = product.ProductCategoryId;
+            viewModel.Title= product.Title;
+            viewModel.SalePrice = product.SalePrice;
+            viewModel.Description= product.Description;
+            viewModel.Name = product.Name;
+            viewModel.ModelNumber = product.ModelNumber;
+            viewModel.Is_Taxable = product.Is_Taxable;
+            viewModel.ProductTaxCode = product.ProductTaxCode;
+            return Ok(viewModel);
+        }
     }
 }

@@ -47,6 +47,7 @@ namespace Ecommerce.Admin.Controllers
                 product.SalePrice = viewModel.SalePrice;
                 product.Description = viewModel.Description;
                 product.Title = viewModel.Title;
+                product.ModelNumber = viewModel.ModelNumber;
                 product.ProductCategoryId = viewModel.ProductCategoryId;
                 _productRepository.Create(product);
                 await _productRepository.SaveAsync();
@@ -60,19 +61,20 @@ namespace Ecommerce.Admin.Controllers
 
         public async Task<ActionResult> Edit(Guid id)
         {
-            var productCateogory = await _productRepository.FindByCondition(x => x.Id == id).FirstOrDefaultAsync();
-            if (productCateogory == null)
+            var product = await _productRepository.FindByCondition(x => x.Id == id).FirstOrDefaultAsync();
+            if (product == null)
             {
                 return View();
             }
             var data = await _productCategoryRepository.FindAll().Select(x => new DropDownList { Value = x.Id, Text = x.Name }).ToListAsync();
             ProductViewModel viewModel = new ProductViewModel();          
             viewModel.Id = id;
-            viewModel.Name = productCateogory.Name;
-            viewModel.SalePrice = productCateogory.SalePrice;
-            viewModel.Title = productCateogory.Title;
-            viewModel.Description = productCateogory.Description;
-            viewModel.ProductCategoryId = productCateogory.ProductCategoryId;
+            viewModel.Name = product.Name;
+            viewModel.SalePrice = product.SalePrice;
+            viewModel.ModelNumber = product.ModelNumber;
+            viewModel.Title = product.Title;
+            viewModel.Description = product.Description;
+            viewModel.ProductCategoryId = product.ProductCategoryId;
             viewModel.DropDownList = data;
             return View(viewModel);
         }
@@ -95,6 +97,7 @@ namespace Ecommerce.Admin.Controllers
                 }
                 product.Name = viewModel.Name;
                 product.SalePrice = viewModel.SalePrice;
+                product.ModelNumber = viewModel.ModelNumber;
                 product.Description = viewModel.Description;
                 product.Title = viewModel.Title;
                 product.ProductCategoryId = viewModel.ProductCategoryId;
