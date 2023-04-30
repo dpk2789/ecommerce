@@ -25,7 +25,7 @@ namespace Ecommerce.WebApi.Controllers
         {
             try
             {
-                var user = await _userManager.FindByIdAsync(request.UserId);
+                var user = await _userManager.FindByEmailAsync(request.UserId);
                 if (user == null) return NotFound();
 
                 request.UserId = user.Id;

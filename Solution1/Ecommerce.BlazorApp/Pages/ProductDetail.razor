@@ -1,6 +1,7 @@
 ﻿@page "/productdetail/{id}/"
 @page "/productdetail"
-@inject IHttpClientFactory _clientFacotry;
+@inject IHttpClientFactory _clientFacotry
+@inject IAuthService authService
 @inject NavigationManager _navigationManager
 
 <section class="section-content padding-y bg">
@@ -61,30 +62,30 @@
                             <div class="form-group col-md flex-grow-0">
                                 <label>Quantity</label>
                                 <div class="input-group mb-3 input-spinner">
-                                    <div class="input-group-prepend">
-                                        <button class="btn btn-light" type="button" id="button-plus"> + </button>
-                                    </div>
-                                    <input type="text" class="form-control" value="1">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-light" type="button" id="button-minus"> &minus; </button>
-                                    </div>
+                                    <select name="quantity" autocomplete="off" class="form-select" @bind=addToCartRequest.Qty>
+                                        <option value="1" selected="">1 </option>
+                                        <option value="2">2 </option>
+                                        <option value="3">3 </option>
+                                        <option value="4">4 </option>
+                                        <option value="5">5 </option>
+                                    </select>
                                 </div>
                             </div> <!-- col.// -->
-                           
+
                         </div> <!-- row.// -->
                         <a href="#" class="btn  btn-primary"> Buy now </a>
-                        <a href="#" class="btn  btn-outline-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
+                        <a class="btn  btn-outline-primary"> <span class="text" onclick="@(async()=>{await AddToCart();})">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
                     </article> <!-- product-info-aside .// -->
                 </main> <!-- col.// -->
             </div> <!-- row.// -->
         </div> <!-- card.// -->
-        <!-- ============================ COMPONENT 1 END .// ================================= -->
+
 
         <br><br>
 
     </div> <!-- container .//  -->
 </section>
-<!-- ========================= SECTION CONTENT END// ========================= -->
+
 @code {
     [Parameter]
     public string Id { get; set; }
@@ -92,11 +93,12 @@
     private string? errorMessage;
     private bool? success = true;
     public ProductDetailViewModel productDetail = new ProductDetailViewModel();
+    public AddToCartRequest addToCartRequest = new AddToCartRequest();
     protected override async Task OnInitializedAsync()
     {
         _showSpinner = true;
         var httpClient = _clientFacotry.CreateClient("ProductsAPI");
-
+        addToCartRequest.Qty = 1;
         var getProductsUri = new Uri(httpClient.BaseAddress + "/products/GetProductById" + $"?Id={Id}");
         using (var response = await httpClient.GetAsync(getProductsUri))
         {
@@ -112,6 +114,39 @@
                 productDetail = JsonConvert.DeserializeObject<ProductDetailViewModel>(recivedContent);
             }
         }
+        StateHasChanged();
+    }
+
+    private async Task AddToCart()
+    {
+        _showSpinner = true;
+        var httpClient = _clientFacotry.CreateClient("ProductsAPI");
+        var username = await authService.GetUserName();
+        addToCartRequest.UserId = username;
+        addToCartRequest.ProductId = Id;
+        if (username == "")
+        {
+            _navigationManager.NavigateTo("/login", true);
+            StateHasChanged();
+        }
+        StringContent content = new StringContent(JsonConvert.SerializeObject(addToCartRequest), Encoding.UTF8, "application/json");
+        var loginUrl = new Uri(httpClient.BaseAddress + "/Cart/AddToCart");
+        using (var response = await httpClient.PostAsync(loginUrl, content))
+        {
+            string recivedContent = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                errorMessage = response.ReasonPhrase;
+            }
+            if (response.IsSuccessStatusCode)
+            {
+
+                _navigationManager.NavigateTo("/", true);
+            }
+
+            _showSpinner = false;
+        }
+
         StateHasChanged();
     }
 }
