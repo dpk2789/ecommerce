@@ -1,4 +1,5 @@
 ﻿using Ecommerce.Infrastructure.IRepositories;
+using Ecommerce.Infrastructure.Repositories;
 using Ecommerce.WebApi.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +12,11 @@ namespace Ecommerce.WebApi.Controllers
     public class ProductsController : ControllerBase
     {
         public readonly IProductRepository _productRepository;
-        public ProductsController(IProductRepository repoWrapper)
+        public readonly ICartRepository _cartRepository;
+        public ProductsController(IProductRepository repoWrapper, ICartRepository cartRepository)
         {
             _productRepository = repoWrapper;
+            _cartRepository = cartRepository;
         }
 
         [HttpGet("GetAllProducts")]
@@ -55,6 +58,15 @@ namespace Ecommerce.WebApi.Controllers
                 return NotFound();
             }
             var viewModel = new ProductViewModel();
+            var cartProduct = _cartRepository.FindByCondition(x => x.ProductId == Id).FirstOrDefaultAsync();
+            if (cartProduct == null)
+            {
+                viewModel.IsInCart = false;
+            }
+            else
+            {
+                viewModel.IsInCart = true;
+            }
             viewModel.Id = product.Id;
             viewModel.ProductCategoryId = product.ProductCategoryId;
             viewModel.Title = product.Title;

@@ -56,11 +56,11 @@
                                                     <small class="text-muted">
                                                         <span>&#8377;</span>@item.MRP each
                                                     </small>
-                                                </div> <!-- price-wrap .// -->
-                                    </td>
+                                                </div>
+                                            </td>
                                             <td class="text-right">
                                                 <a data-original-title="Save to Wishlist" title="" href="" class="btn btn-light" data-toggle="tooltip"> <i class="fa fa-heart"></i></a>
-                                                <a href="" class="btn btn-light"> Remove</a>
+                                                <a class="btn btn-light" onclick="@(async()=>{await RemoveFromCart(item);})"> Remove</a>
                                             </td>
                                         </tr>
                                     }
@@ -73,8 +73,8 @@
                     </table>
 
                     <div class="card-body border-top">
-                        <a href="#" class="btn btn-primary float-md-end"> Make Purchase <i class="fa fa-chevron-right"></i> </a>
-                        <a href="#" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Continue shopping </a>
+                        <a href="/checkout" class="btn btn-primary float-md-end"> Checkout <i class="fa fa-chevron-right"></i> </a>
+                        <a href="/" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Continue shopping </a>
                     </div>
                 </div> <!-- card.// -->
 
@@ -154,6 +154,7 @@
     public List<CartProductViewModel>? cartProducts;
     private string? errorMessage;
     private bool? success = true;
+    internal bool _showSpinner = false;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -188,6 +189,39 @@
                 cartProducts = JsonConvert.DeserializeObject<List<CartProductViewModel>>(recivedContent);
             }
         }
+        StateHasChanged();
+    }
+
+    private async Task RemoveFromCart(CartProductViewModel cartProductViewModel)
+    {
+        _showSpinner = true;
+        var httpClient = _clientFacotry.CreateClient("ProductsAPI");
+        var username = await authService.GetUserName();
+
+        if (username == "")
+        {
+            _navigationManager.NavigateTo("/login", true);
+            StateHasChanged();
+        }
+        cartProducts.Remove(cartProductViewModel);
+        //StringContent content = new StringContent(JsonConvert.SerializeObject(cartProductViewModel), Encoding.UTF8, "application/json");
+        //var loginUrl = new Uri(httpClient.BaseAddress + "/Cart/AddToCart");
+        //using (var response = await httpClient.PostAsync(loginUrl, content))
+        //{
+        //    string recivedContent = await response.Content.ReadAsStringAsync();
+        //    if (!response.IsSuccessStatusCode)
+        //    {
+        //        errorMessage = response.ReasonPhrase;
+        //    }
+        //    if (response.IsSuccessStatusCode)
+        //    {
+
+        //        _navigationManager.NavigateTo("/", true);
+        //    }
+
+        //    _showSpinner = false;
+        //}
+
         StateHasChanged();
     }
 }

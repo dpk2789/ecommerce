@@ -74,7 +74,23 @@
 
                         </div> <!-- row.// -->
                         <a href="#" class="btn  btn-primary"> Buy now </a>
-                        <a class="btn  btn-outline-primary"> <span class="text" onclick="@(async()=>{await AddToCart();})">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
+                        @{
+                            if (productDetail.IsInCart == true)
+                            {
+                                <a class="btn  btn-outline-primary" href="/cart">
+                                    <span class="text">Go to cart</span>
+                                    <i class="fas fa-shopping-cart"></i>
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="btn  btn-outline-primary">
+                                    <span class="text" onclick="@(async()=>{await AddToCart();})">Add to cart</span>
+                                    <i class="fas fa-shopping-cart"></i>
+                                </a>
+                            }
+                        }
+
                     </article> <!-- product-info-aside .// -->
                 </main> <!-- col.// -->
             </div> <!-- row.// -->

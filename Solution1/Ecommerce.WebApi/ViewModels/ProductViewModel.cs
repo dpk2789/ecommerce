@@ -25,7 +25,7 @@
         public decimal? Value { get; set; }
         public decimal? SalePrice { get; set; }
         public bool Is_Taxable { get; set; }
-        public bool? IsGroup { get; set; }
+        public bool? IsInCart { get; set; }
         public Guid ProductCategoryId { get; set; }
     }
 }
