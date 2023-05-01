@@ -13,8 +13,11 @@
         public string? Title { get; set; }
         public string? Percent { get; set; }
         public string? ProductTaxCode { get; set; }
-        public string? DiscountType { get; set; } //dynamic amount or %
-
+        public string? DiscountType { get; set; }
+        public string? Size { get; set; }
+        public string? Colour { get; set; }
+        public string? Brand { get; set; }
+        public string? MRP { get; set; }
         public string? ItemTypeId { get; set; }
         public string? CategoryName { get; set; }
         public string? AutoGenerateName { get; set; }

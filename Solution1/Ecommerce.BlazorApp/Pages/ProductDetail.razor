@@ -124,6 +124,7 @@
         var username = await authService.GetUserName();
         addToCartRequest.UserId = username;
         addToCartRequest.ProductId = Id;
+        addToCartRequest.Price = productDetail.SalePrice;
         if (username == "")
         {
             _navigationManager.NavigateTo("/login", true);

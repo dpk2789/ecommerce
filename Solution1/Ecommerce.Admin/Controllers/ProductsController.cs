@@ -48,6 +48,10 @@ namespace Ecommerce.Admin.Controllers
                 product.Description = viewModel.Description;
                 product.Title = viewModel.Title;
                 product.ModelNumber = viewModel.ModelNumber;
+                product.Size = viewModel.Size;
+                product.MRP = viewModel.MRP;
+                product.Colour = viewModel.Colour;
+                product.Brand = viewModel.Brand;
                 product.ProductCategoryId = viewModel.ProductCategoryId;
                 _productRepository.Create(product);
                 await _productRepository.SaveAsync();
@@ -74,6 +78,10 @@ namespace Ecommerce.Admin.Controllers
             viewModel.ModelNumber = product.ModelNumber;
             viewModel.Title = product.Title;
             viewModel.Description = product.Description;
+            viewModel.Size = product.Size;
+            viewModel.MRP = product.MRP;
+            viewModel.Colour = product.Colour;
+            viewModel.Brand = product.Brand;
             viewModel.ProductCategoryId = product.ProductCategoryId;
             viewModel.DropDownList = data;
             return View(viewModel);
@@ -100,6 +108,10 @@ namespace Ecommerce.Admin.Controllers
                 product.ModelNumber = viewModel.ModelNumber;
                 product.Description = viewModel.Description;
                 product.Title = viewModel.Title;
+                product.Size = viewModel.Size;
+                product.MRP = viewModel.MRP;
+                product.Colour = viewModel.Colour;
+                product.Brand = viewModel.Brand;
                 product.ProductCategoryId = viewModel.ProductCategoryId;
                 _productRepository.Update(product);
                 await _productRepository.SaveAsync();

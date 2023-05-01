@@ -27,6 +27,11 @@ namespace Ecommerce.WebApi.Controllers
                     Name = x.Name,
                     Title = x.Title,
                     SalePrice = x.SalePrice,
+                    Description = x.Description,
+                    Size = x.Size,
+                    Colour = x.Colour,
+                    Brand = x.Brand,
+                    MRP = x.MRP,
                 }).OrderBy(ow => ow.Name).ToListAsync();
 
                 if (data == null)
@@ -52,13 +57,17 @@ namespace Ecommerce.WebApi.Controllers
             var viewModel = new ProductViewModel();
             viewModel.Id = product.Id;
             viewModel.ProductCategoryId = product.ProductCategoryId;
-            viewModel.Title= product.Title;
+            viewModel.Title = product.Title;
             viewModel.SalePrice = product.SalePrice;
-            viewModel.Description= product.Description;
+            viewModel.Description = product.Description;
             viewModel.Name = product.Name;
             viewModel.ModelNumber = product.ModelNumber;
             viewModel.Is_Taxable = product.Is_Taxable;
             viewModel.ProductTaxCode = product.ProductTaxCode;
+            viewModel.Size = product.Size;
+            viewModel.Colour = product.Colour;
+            viewModel.MRP = product.MRP;
+            viewModel.Brand = product.Brand;
             return Ok(viewModel);
         }
     }

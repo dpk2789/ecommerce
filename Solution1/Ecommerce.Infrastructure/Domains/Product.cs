@@ -15,7 +15,12 @@ namespace Ecommerce.Infrastructure.Domains
         public string? Title { get; set; }
         public string? Percent { get; set; }
         public string? ProductTaxCode { get; set; }
-        public string? DiscountType { get; set; } //dynamic amount or %
+        public string? DiscountType { get; set; }
+
+        public string? Size { get; set; }
+        public string? Colour { get; set; }
+        public string? Brand { get; set; }
+        public string? MRP { get; set; }
 
         public string? ItemTypeId { get; set; }
         public string? CategoryName { get; set; }
@@ -26,6 +31,7 @@ namespace Ecommerce.Infrastructure.Domains
         public bool? IsGroup { get; set; }
         public Guid ProductCategoryId { get; set; }
         public virtual ProductCategory ProductCategory { get; set; }
+        public virtual IList<ProductImage>? ProductImages { get; set; }
 
     }
 }

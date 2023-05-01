@@ -1,6 +1,11 @@
-﻿namespace Ecommerce.WebApi.ViewModels
+﻿namespace Ecommerce.BlazorApp.ViewModel
 {
-    public class ProductViewModel
+    public class CartViewModel
+    {
+        public virtual IList<CartProductViewModel>? CartProductList { get; set; }
+    }
+
+    public class CartProductViewModel
     {
         public Guid Id { get; set; }
         public string? ItemType { get; set; }
@@ -18,14 +23,8 @@
         public string? Colour { get; set; }
         public string? Brand { get; set; }
         public string? MRP { get; set; }
-
-        public string? ItemTypeId { get; set; }
         public string? CategoryName { get; set; }
-        public string? AutoGenerateName { get; set; }
-        public decimal? Value { get; set; }
         public decimal? SalePrice { get; set; }
-        public bool Is_Taxable { get; set; }
-        public bool? IsGroup { get; set; }
         public Guid ProductCategoryId { get; set; }
     }
 }

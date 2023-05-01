@@ -10,6 +10,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 //builder.Services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
 builder.Services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IProductImageRepository, ProductImageRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

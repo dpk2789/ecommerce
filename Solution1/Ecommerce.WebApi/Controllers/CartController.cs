@@ -20,6 +20,39 @@ namespace Ecommerce.WebApi.Controllers
             _cartRepository = cartRepository;
         }
 
+        [HttpGet("GetCartProducts")]
+        public async Task<IActionResult> CartProducts(string userName)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(userName);
+                if (user == null) return NotFound();
+                var data = await _cartRepository.FindByCondition(x => x.UserId == user.Id).Include(x => x.Product).Select(x => new CartProductViewModel
+                {
+                    Id = x.Id,
+                    Name = x.Product.Name,
+                    Title = x.Product.Title,
+                    SalePrice = x.Product.SalePrice,
+                    Qty = x.Qty,
+                    Value = x.Value,
+                    Size = x.Product.Size,
+                    Colour = x.Product.Colour,
+                    Brand = x.Product.Brand,
+                    MRP = x.Product.MRP,
+                }).OrderBy(ow => ow.Name).ToListAsync();
+
+                if (data == null)
+                {
+                    return NotFound();
+                }
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
         [HttpPost("addtocart")]
         public async Task<IActionResult> AddToCart([FromBody] AddToCartRequest request)
         {
@@ -40,9 +73,10 @@ namespace Ecommerce.WebApi.Controllers
                 {
                     var newcartProduct = new CartProduct()
                     {
+                        Id = Guid.NewGuid(),
                         ProductId = request.ProductId,
                         Qty = request.Qty,
-                        Value = request.Value.Value,
+                        Value = request.Price.Value * request.Qty,
                         UserId = request.UserId
                     };
                     _cartRepository.Create(newcartProduct);
