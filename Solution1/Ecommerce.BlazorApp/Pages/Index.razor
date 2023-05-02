@@ -60,15 +60,13 @@
 
     </div> <!-- container .//  -->
 </section>
-<!-- ========================= SECTION FEATURE END// ========================= -->
-<!-- ========================= SECTION CONTENT ========================= -->
+
 <section class="section-content">
     <div class="container">
 
         <header class="section-heading">
             <h3 class="section-title">Popular products</h3>
-        </header><!-- sect-heading -->
-
+        </header>
 
         <div class="row">
             @{
@@ -78,7 +76,9 @@
                     {
                         <div class="col-md-3">
                             <div href="#" class="card card-product-grid">
-                                <a href="/productdetail/@item.Id" class="img-wrap"> <img src="images/items/1.jpg"> </a>
+                                <a href="/productdetail/@item.Id" class="img-wrap">
+                                    <img src="@string.Format("https://localhost:7164/Uploads/"+item.ProductImages.FirstOrDefault().Name)" width="300" height="300">
+                                </a>
                                 <figcaption class="info-wrap">
                                     <a href="/productdetail/@item.Id" class="title">@item.Title</a>
 

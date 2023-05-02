@@ -2,6 +2,7 @@
 using Ecommerce.Infrastructure.Domains;
 using Ecommerce.Infrastructure.IRepositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.Admin.Controllers
@@ -60,7 +61,12 @@ namespace Ecommerce.Admin.Controllers
                 string extension = Path.GetExtension(imageModel.ImageFile.FileName);
                 uniqueFileName = Guid.NewGuid().ToString() + "_" + imageModel.ImageFile.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
+            
+                // If directory does not exist, create it.
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
 
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
@@ -78,6 +84,41 @@ namespace Ecommerce.Admin.Controllers
                 return RedirectToAction(nameof(Index), new { productId = imageModel.ProductId });
             }
             return View(imageModel);
+        }
+
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            var product = await _productImageRepository.FindByCondition(x => x.Id == id).FirstOrDefaultAsync();
+            if (product == null)
+            {
+                return View();
+            }
+            ProductImageViewModel viewModel = new ProductImageViewModel();
+            viewModel.Id = id;
+            viewModel.Name = product.Name;
+            viewModel.ProductId = product.ProductId;
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Delete(Guid id, ProductImageViewModel viewModel)
+        {
+            try
+            {
+                var productImage = await _productImageRepository.FindByCondition(x => x.Id == viewModel.Id).FirstOrDefaultAsync();
+                if (productImage == null)
+                {
+                    return View();
+                }
+                _productImageRepository.Delete(productImage);
+                await _productImageRepository.SaveAsync();
+                return RedirectToAction(nameof(Index), new { productId = productImage.ProductId });
+            }
+            catch
+            {
+                return View();
+            }
         }
 
     }

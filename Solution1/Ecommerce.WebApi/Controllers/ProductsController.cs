@@ -1,7 +1,5 @@
 ﻿using Ecommerce.Infrastructure.IRepositories;
-using Ecommerce.Infrastructure.Repositories;
 using Ecommerce.WebApi.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,7 +22,7 @@ namespace Ecommerce.WebApi.Controllers
         {
             try
             {
-                var data = await _productRepository.FindAll().Select(x => new ProductViewModel
+                var data = await _productRepository.FindAll().Include(x => x.ProductImages).Select(x => new ProductViewModel
                 {
                     Id = x.Id,
                     Name = x.Name,
@@ -35,6 +33,12 @@ namespace Ecommerce.WebApi.Controllers
                     Colour = x.Colour,
                     Brand = x.Brand,
                     MRP = x.MRP,
+                    ProductImages = (List<ProductImageViewModel>)x.ProductImages.Select(y => new ProductImageViewModel
+                    {
+                        Id = y.Id,
+                        Name = y.Name,
+                        RelativePath = y.RelativePath,
+                    })
                 }).OrderBy(ow => ow.Name).ToListAsync();
 
                 if (data == null)
@@ -80,6 +84,12 @@ namespace Ecommerce.WebApi.Controllers
             viewModel.Colour = product.Colour;
             viewModel.MRP = product.MRP;
             viewModel.Brand = product.Brand;
+            viewModel.ProductImages = (List<ProductImageViewModel>)x.ProductImages.Select(y => new ProductImageViewModel
+            {
+                Id = y.Id,
+                Name = y.Name,
+                RelativePath = y.RelativePath,
+            });
             return Ok(viewModel);
         }
     }
