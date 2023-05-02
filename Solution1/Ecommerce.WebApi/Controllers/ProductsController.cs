@@ -56,13 +56,14 @@ namespace Ecommerce.WebApi.Controllers
         [HttpGet("GetProductById")]
         public async Task<IActionResult> GetProductById(Guid Id)
         {
-            var product = await _productRepository.FindByCondition(x => x.Id == Id).FirstOrDefaultAsync();
+            var product = await _productRepository.FindByCondition(x => x.Id == Id).Include(x => x.ProductImages).FirstOrDefaultAsync();
             if (product == null)
             {
                 return NotFound();
             }
             var viewModel = new ProductViewModel();
-            var cartProduct = _cartRepository.FindByCondition(x => x.ProductId == Id).FirstOrDefaultAsync();
+            List<ProductImageViewModel> productImageList = new List<ProductImageViewModel>();
+            var cartProduct = await _cartRepository.FindByCondition(x => x.ProductId == Id).FirstOrDefaultAsync();
             if (cartProduct == null)
             {
                 viewModel.IsInCart = false;
@@ -84,12 +85,18 @@ namespace Ecommerce.WebApi.Controllers
             viewModel.Colour = product.Colour;
             viewModel.MRP = product.MRP;
             viewModel.Brand = product.Brand;
-            viewModel.ProductImages = (List<ProductImageViewModel>)x.ProductImages.Select(y => new ProductImageViewModel
+            if (product.ProductImages != null)
             {
-                Id = y.Id,
-                Name = y.Name,
-                RelativePath = y.RelativePath,
-            });
+                foreach (var item in product.ProductImages)
+                {
+                    ProductImageViewModel productImageViewModel = new ProductImageViewModel();
+                    productImageViewModel.Id = item.Id;
+                    productImageViewModel.Name = item.Name;
+                    productImageViewModel.RelativePath = item.RelativePath;
+                    productImageList.Add(productImageViewModel);
+                }
+            }
+            viewModel.ProductImages = productImageList;
             return Ok(viewModel);
         }
     }

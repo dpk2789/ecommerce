@@ -27,7 +27,6 @@
         public bool Is_Taxable { get; set; }
         public bool? IsInCart { get; set; }
         public Guid ProductCategoryId { get; set; }
-
         public List<ProductImageViewModel>? ProductImages { get; set; }
     }
 

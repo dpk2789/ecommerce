@@ -23,10 +23,10 @@
         public bool Is_Taxable { get; set; }
         public bool? IsGroup { get; set; }
         public Guid ProductCategoryId { get; set; }
-        public List<ProductImageViewModel>? ProductImages { get; set; }
+        public List<ProductDetailImageViewModel>? ProductImages { get; set; }
     }
 
-    public class ProductImageViewModel
+    public class ProductDetailImageViewModel
     {
         public Guid? Id { get; set; }
         public string? Name { get; set; }

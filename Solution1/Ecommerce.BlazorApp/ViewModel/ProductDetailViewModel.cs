@@ -20,8 +20,19 @@
         public string? AutoGenerateName { get; set; }
         public decimal? Value { get; set; }
         public decimal? SalePrice { get; set; }
-        public bool Is_Taxable { get; set; }
+        public bool? Is_Taxable { get; set; }
         public bool? IsInCart { get; set; }
         public Guid ProductCategoryId { get; set; }
+        public List<ProductImageViewModel>? ProductImages { get; set; }
+    }
+
+    public class ProductImageViewModel
+    {
+        public Guid? Id { get; set; }
+        public string? Name { get; set; }
+        public string? Extention { get; set; }
+        public string? RelativePath { get; set; }
+        public string? GlobalPath { get; set; }
+        public Guid? ProductId { get; set; }
     }
 }

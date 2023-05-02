@@ -12,15 +12,25 @@
                 <aside class="col-md-6">
                     <article class="gallery-wrap">
                         <div class="img-big-wrap">
-                            <a href="#"><img src="../images/items/12.jpg"></a>
-                        </div> <!-- img-big-wrap.// -->
+                            @{
+                                if (productDetail.ProductImages != null)
+                                {
+                                    <a><img src="@MainImagePath"></a>
+                                }
+                            }
+                        </div>
                         <div class="thumbs-wrap">
-                            <a href="#" class="item-thumb"> <img src="../images/items/12-1.jpg"></a>
-                            <a href="#" class="item-thumb"> <img src="../images/items/12-2.jpg"></a>
-                            <a href="#" class="item-thumb"> <img src="../images/items/12.jpg"></a>
-                            <a href="#" class="item-thumb"> <img src="../images/items/4.jpg"></a>
-                        </div> <!-- thumbs-wrap.// -->
-                    </article> <!-- gallery-wrap .end// -->
+                            @{
+                                if (productDetail.ProductImages != null)
+                                {
+                                    @foreach (var item in productDetail.ProductImages)
+                                    {
+                                        <a onclick="@(async()=>{await ChangeMainImage(item);})" class="item-thumb"> <img src="@string.Format("https://localhost:7164/Uploads/"+item.Name)"></a>
+                                    }
+                                }
+                            }
+                        </div>
+                    </article>
                 </aside>
                 <main class="col-md-6 border-left">
                     <article class="content-body">
@@ -38,7 +48,7 @@
                             </ul>
                             <small class="label-rating text-muted">132 reviews</small>
                             <small class="label-rating text-success"> <i class="fa fa-clipboard-check"></i> 154 orders </small>
-                        </div> <!-- rating-wrap.// -->
+                        </div>
 
                         <div class="mb-3">
                             <var class="price h4">Rs.@productDetail.SalePrice</var>
@@ -73,7 +83,7 @@
                             </div> <!-- col.// -->
 
                         </div> <!-- row.// -->
-                        <a href="#" class="btn  btn-primary"> Buy now </a>
+                        <a href="/checkout" class="btn  btn-primary"> Buy now </a>
                         @{
                             if (productDetail.IsInCart == true)
                             {
@@ -96,7 +106,6 @@
             </div> <!-- row.// -->
         </div> <!-- card.// -->
 
-
         <br><br>
 
     </div> <!-- container .//  -->
@@ -107,6 +116,7 @@
     public string Id { get; set; }
     internal bool _showSpinner = false;
     private string? errorMessage;
+    private string? MainImagePath;
     private bool? success = true;
     public ProductDetailViewModel productDetail = new ProductDetailViewModel();
     public AddToCartRequest addToCartRequest = new AddToCartRequest();
@@ -130,6 +140,7 @@
                 productDetail = JsonConvert.DeserializeObject<ProductDetailViewModel>(recivedContent);
             }
         }
+        MainImagePath = string.Format("https://localhost:7164/Uploads/" + productDetail.ProductImages.FirstOrDefault().Name);
         StateHasChanged();
     }
 
@@ -158,12 +169,19 @@
             if (response.IsSuccessStatusCode)
             {
 
-                _navigationManager.NavigateTo("/", true);
+                _navigationManager.NavigateTo("/productdetail/" + Id, true);
             }
 
             _showSpinner = false;
         }
 
+        StateHasChanged();
+    }
+
+    private async Task ChangeMainImage(ProductImageViewModel imageViewModel)
+    {
+        _showSpinner = true;
+        MainImagePath = string.Format("https://localhost:7164/Uploads/" + imageViewModel.Name);
         StateHasChanged();
     }
 }

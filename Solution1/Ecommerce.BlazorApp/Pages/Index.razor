@@ -77,7 +77,13 @@
                         <div class="col-md-3">
                             <div href="#" class="card card-product-grid">
                                 <a href="/productdetail/@item.Id" class="img-wrap">
-                                    <img src="@string.Format("https://localhost:7164/Uploads/"+item.ProductImages.FirstOrDefault().Name)" width="300" height="300">
+                                    @{
+                                        if (item.ProductImages.Count > 0)
+                                        {
+                                            <img src="@string.Format("https://localhost:7164/Uploads/"+item.ProductImages.FirstOrDefault().Name)" width="300" height="300">
+                                        }
+                                    }
+
                                 </a>
                                 <figcaption class="info-wrap">
                                     <a href="/productdetail/@item.Id" class="title">@item.Title</a>
@@ -114,13 +120,18 @@
     private bool? success = true;
 
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    if (firstRender)
+    //    {
+    //        await FetchProductList();
+    //        await base.OnAfterRenderAsync(firstRender);
+    //    }
+    //}
+
+    protected override async Task OnInitializedAsync()
     {
-        if (firstRender)
-        {
-            await FetchProductList();
-            await base.OnAfterRenderAsync(firstRender);
-        }
+        await FetchProductList();
     }
 
     public async Task FetchProductList()
