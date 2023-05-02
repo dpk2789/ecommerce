@@ -204,23 +204,23 @@
             StateHasChanged();
         }
         cartProducts.Remove(cartProductViewModel);
-        //StringContent content = new StringContent(JsonConvert.SerializeObject(cartProductViewModel), Encoding.UTF8, "application/json");
-        //var loginUrl = new Uri(httpClient.BaseAddress + "/Cart/AddToCart");
-        //using (var response = await httpClient.PostAsync(loginUrl, content))
-        //{
-        //    string recivedContent = await response.Content.ReadAsStringAsync();
-        //    if (!response.IsSuccessStatusCode)
-        //    {
-        //        errorMessage = response.ReasonPhrase;
-        //    }
-        //    if (response.IsSuccessStatusCode)
-        //    {
+        StringContent content = new StringContent(JsonConvert.SerializeObject(cartProductViewModel), Encoding.UTF8, "application/json");
+        var removeFromCartUri = new Uri(httpClient.BaseAddress + "/Cart/removeproductfromcart");
+        using (var response = await httpClient.PostAsync(removeFromCartUri, content))
+        {
+            string recivedContent = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                errorMessage = response.ReasonPhrase;
+            }
+            if (response.IsSuccessStatusCode)
+            {
 
-        //        _navigationManager.NavigateTo("/", true);
-        //    }
+                _navigationManager.NavigateTo("/", true);
+            }
 
-        //    _showSpinner = false;
-        //}
+            _showSpinner = false;
+        }
 
         StateHasChanged();
     }

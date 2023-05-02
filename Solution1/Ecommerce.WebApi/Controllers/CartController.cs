@@ -39,6 +39,7 @@ namespace Ecommerce.WebApi.Controllers
                     Colour = x.Product.Colour,
                     Brand = x.Product.Brand,
                     MRP = x.Product.MRP,
+                    ProductId = x.Product.Id,
                 }).OrderBy(ow => ow.Name).ToListAsync();
 
                 if (data == null)
@@ -87,6 +88,26 @@ namespace Ecommerce.WebApi.Controllers
             catch (Exception ex)
             {
                 return BadRequest("Failed to add to cart");
+            }
+        }
+
+        [HttpPost("removeproductfromcart")]
+        public async Task<ActionResult> RemoveProductFromCart(Guid? id, CartProductViewModel viewModel)
+        {
+            try
+            {
+                var cartProduct = await _cartRepository.FindByCondition(x => x.Id == viewModel.Id).FirstOrDefaultAsync();
+                if (cartProduct == null)
+                {
+                    return NotFound();
+                }
+                _cartRepository.Delete(cartProduct);
+                await _cartRepository.SaveAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return BadRequest();
             }
         }
     }

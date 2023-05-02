@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\Uploads\09032023234133255.jpg\**" />
+    <Compile Remove="wwwroot\Uploads\28022023234014884.jpg\**" />
+    <Content Remove="wwwroot\Uploads\09032023234133255.jpg\**" />
+    <Content Remove="wwwroot\Uploads\28022023234014884.jpg\**" />
+    <EmbeddedResource Remove="wwwroot\Uploads\09032023234133255.jpg\**" />
+    <EmbeddedResource Remove="wwwroot\Uploads\28022023234014884.jpg\**" />
+    <None Remove="wwwroot\Uploads\09032023234133255.jpg\**" />
+    <None Remove="wwwroot\Uploads\28022023234014884.jpg\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.15" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.15">
       <PrivateAssets>all</PrivateAssets>
@@ -18,6 +29,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ecommerce.Infrastructure\Ecommerce.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Uploads\" />
   </ItemGroup>
 
 </Project>
