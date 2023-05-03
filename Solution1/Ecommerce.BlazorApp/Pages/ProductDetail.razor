@@ -25,7 +25,7 @@
                                 {
                                     @foreach (var item in productDetail.ProductImages)
                                     {
-                                        <a onclick="@(async()=>{await ChangeMainImage(item);})" class="item-thumb"> <img src="@string.Format("https://localhost:7164/Uploads/"+item.Name)"></a>
+                                        <a onclick="@(async()=>{await ChangeMainImage(item);})" class="item-thumb"> <img src="@string.Format("http://194.195.114.253:6004/Uploads/"+item.Name)"></a>
                                     }
                                 }
                             }
@@ -181,7 +181,7 @@
     private async Task ChangeMainImage(ProductImageViewModel imageViewModel)
     {
         _showSpinner = true;
-        MainImagePath = string.Format("https://localhost:7164/Uploads/" + imageViewModel.Name);
+        MainImagePath = string.Format("http://194.195.114.253:6004/Uploads/" + imageViewModel.Name);
         StateHasChanged();
     }
 }

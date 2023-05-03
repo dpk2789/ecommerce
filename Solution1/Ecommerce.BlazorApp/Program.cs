@@ -15,16 +15,16 @@ builder.Services.AddScoped<AuthenticationStateProvider>(x => x.GetRequiredServic
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddHttpClient("ProductsAPI", (sp, client) =>
 {
-    client.BaseAddress = new Uri("https://localhost:7237/api");
+    client.BaseAddress = new Uri("http://api.robustpackaging.in/api");
 });
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error");
+    //app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    // app.UseHsts();
 }
 
 app.UseHttpsRedirection();

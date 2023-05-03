@@ -19,7 +19,7 @@
 
     <!-- custom style -->
     <link href="css/ui.css" rel="stylesheet" type="text/css" />
-        <link href="css/site.css" rel="stylesheet" type="text/css" />
+    <link href="css/site.css" rel="stylesheet" type="text/css" />
     <link href="css/responsive.css" rel="stylesheet" media="only screen and (max-width: 1200px)" />
 
     <!-- custom javascript -->
@@ -45,30 +45,30 @@
         <div class="container">
             <section class="footer-top  padding-y">
                 <div class="row">
-                    <aside class="col-md col-6">
+                    @* <aside class="col-md col-6">
                         <h6 class="title">Brands</h6>
                         <ul class="list-unstyled">
-                            <li> <a href="#">Adidas</a></li>
-                            <li> <a href="#">Puma</a></li>
-                            <li> <a href="#">Reebok</a></li>
-                            <li> <a href="#">Nike</a></li>
+                        <li> <a href="#">Robust Packaging</a></li>
+                        <li> <a href="#"></a></li>
+                        <li> <a href="#">Reebok</a></li>
+                        <li> <a href="#">Nike</a></li>
                         </ul>
-                    </aside>
+                        </aside>*@
                     <aside class="col-md col-6">
                         <h6 class="title">Company</h6>
                         <ul class="list-unstyled">
-                            <li> <a href="#">About us</a></li>
-                            <li> <a href="#">Career</a></li>
-                            <li> <a href="#">Find a store</a></li>
-                            <li> <a href="#">Rules and terms</a></li>
+                            <li> <a href="/aboutus">About us</a></li>
+                            <li> <a href="/privacy">Privacy Policy</a></li>
+                            <li> <a href="/terms">Terms</a></li>
+                            <li> <a href="/refundpolicy">Refund Policy</a></li>
                             <li> <a href="#">Sitemap</a></li>
                         </ul>
                     </aside>
                     <aside class="col-md col-6">
                         <h6 class="title">Help</h6>
                         <ul class="list-unstyled">
-                            <li> <a href="#">Contact us</a></li>
-                            <li> <a href="#">Money refund</a></li>
+                            <li> <a href="/contactus">Contact us</a></li>
+                            <li> <a href="/refundpolicy">Money refund</a></li>
                             <li> <a href="#">Order status</a></li>
                             <li> <a href="#">Shipping info</a></li>
                             <li> <a href="#">Open dispute</a></li>
@@ -77,10 +77,10 @@
                     <aside class="col-md col-6">
                         <h6 class="title">Account</h6>
                         <ul class="list-unstyled">
-                            <li> <a href="#"> User Login </a></li>
-                            <li> <a href="#"> User register </a></li>
-                            <li> <a href="#"> Account Setting </a></li>
-                            <li> <a href="#"> My Orders </a></li>
+                            <li> <a href="/login"> User Login </a></li>
+                            <li> <a href="/register"> User register </a></li>
+                            <li> <a href="/profile"> Account Setting </a></li>
+                            <li> <a href="/myorders"> My Orders </a></li>
                         </ul>
                     </aside>
                     <aside class="col-md">
@@ -97,12 +97,12 @@
 
             <section class="footer-bottom row">
                 <div class="col-md-2">
-                    <p class="text-muted"> &copy 2019 Company name </p>
+                    <p class="text-muted"> &copy @DateTime.Now.Year DPN INDUSTRIES </p>
                 </div>
                 <div class="col-md-8 text-md-center">
-                    <span class="px-2">info@pixsellz.io</span>
-                    <span class="px-2">+879-332-9375</span>
-                    <span class="px-2">Street name 123, Avanue abc</span>
+                    <span class="px-2">support@robustpackaging.in</span>
+                    @* <span class="px-2">+879-332-9375</span>*@
+                    <span class="px-2">RIICO PALRA , AJMER - 305001</span>
                 </div>
                 <div class="col-md-2 text-md-right text-muted">
                     <i class="fab fa-lg fa-cc-visa"></i>
