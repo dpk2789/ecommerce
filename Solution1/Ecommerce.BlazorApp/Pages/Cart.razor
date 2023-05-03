@@ -8,8 +8,7 @@
         <h2 class="title-page">Shopping cart</h2>
     </div> <!-- container //  -->
 </section>
-<!-- ========================= SECTION INTRO END// ========================= -->
-<!-- ========================= SECTION CONTENT ========================= -->
+
 <section class="section-content padding-y">
     <div class="container">
 
@@ -52,7 +51,7 @@
                                             </td>
                                             <td>
                                                 <div class="price-wrap">
-                                                    <var class="price"><span>&#8377;</span>@item.SalePrice</var>
+                                                    <var class="price"><span>&#8377;</span>@String.Format(new CultureInfo("hi-IN"),"{0:C}", item.SalePrice)</var>
                                                     <small class="text-muted">
                                                         <span>&#8377;</span>@item.MRP each
                                                     </small>

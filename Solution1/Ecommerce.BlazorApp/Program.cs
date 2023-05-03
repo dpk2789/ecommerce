@@ -15,7 +15,7 @@ builder.Services.AddScoped<AuthenticationStateProvider>(x => x.GetRequiredServic
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddHttpClient("ProductsAPI", (sp, client) =>
 {
-    client.BaseAddress = new Uri("http://api.robustpackaging.in/api");
+    client.BaseAddress = new Uri("https://api.robustpackaging.in/api");
 });
 var app = builder.Build();
 
